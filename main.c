@@ -106,14 +106,14 @@ void	create_threads_pair_and_odd(int is_odd, t_node *table)
 	{
 		if((table->index % 2) == is_odd)
 		{
-			pthread_create(&table->thread_id, NULL, nothing, NULL);
+			pthread_create(&table->thread_id, NULL, philosopher_lifecycle, NULL);
 			printf("%ld\n", table->thread_id);
 		}
 		table = table->next;
 	}
 	if((table->index % 2) == is_odd)
 	{
-		pthread_create(&table->thread_id, NULL, nothing, NULL);
+		pthread_create(&table->thread_id, NULL, philosopher_lifecycle, NULL);
 		printf("%ld\n", table->thread_id);
 	}
 }
@@ -130,8 +130,14 @@ void	init_mutex(t_node *table)
 
 void	run_the_last_supper_simulation(t_node *table, t_data *args)
 {
+	t_data_and_node object;
+
+	object.table = table;
+	object.args = args;
+
 	print_table(table);
 	print_args(args);
+
 
 	init_mutex(table);
 	create_threads_pair_and_odd(1, table);
@@ -141,36 +147,15 @@ void	run_the_last_supper_simulation(t_node *table, t_data *args)
 	exit(1);
 }
 
-void *philosopher_lifecycle(void *vargp)
-{
-	t_node *myself = (t_node *)vargp;
-	t_node *left_neighboor = myself->previous;
-
-	while(1)
-	{
-		pthread_mutex_lock(&left_neighboor->fork);
-		printf("%d has taken a fork", myself->index);
-		pthread_mutex_lock(&myself->fork);
-		printf("%d has taken a fork", myself->index);
-		printf("%d is eating", myself->index);
-		usleep(myself->time_to_eat);
-		pthread_mutex_unlock(&left_neighboor->fork);
-		pthread_mutex_unlock(&myself->fork);
-		printf("%d is sleeping", myself->index);
-		usleep(myself->time_to_sleep);
-		printf("%d is thinking", myself->index);
-	}
-}
-
 int main(int argc, char *argv[])
 {
 	t_node *table;
 	t_data *args;
 
+
 	args = check_valid_arguments_and_struct(argc, argv);
 	table = create_table_and_fill_with_n_philosophers(args->number_of_philosophers);
 	run_the_last_supper_simulation(table, args);
-
 	free_args_and_table(table, args);
 	return (0);
 }

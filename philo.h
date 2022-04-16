@@ -27,7 +27,13 @@ typedef struct s_data
     int time_to_sleep;
     int number_of_times_each_philosopher_must_eat;
     struct timeval start_time;
-}   t_data;
+}					t_data;
+
+typedef struct s_data_and_node
+{
+	t_data *args;
+	t_node *table;
+}					t_data_and_node;
 
 // LINKED LIST CONTROL
 t_node	*insert_node(t_node *list, int index);
@@ -42,4 +48,6 @@ size_t	ft_strlen(const char *pointer);
 void    correct_arguments(int argc, char *argv[]);
 void	isnumber_handler(int argc, char *argv[]);
 
+// SIMULATION
+void	*philosopher_lifecycle(void *vargp);
 #endif

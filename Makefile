@@ -1,6 +1,7 @@
 NAME := philo
 SRC :=	circle.c main.c \
-		handle_errors.c utils.c
+		handle_errors.c utils.c \
+		lifecycle.c
 
 OBJS := $(SRC:.c=.o)
 
