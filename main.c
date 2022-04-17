@@ -16,146 +16,20 @@ t_data  *check_valid_arguments_and_struct(int argc, char *argv[])
 	return args;
 }
 
-/* create_philosophers
-Each philosopher has a number ranging from 1 to number_of_philosophers.
-
-Philosopher number 1 sits next to philosopher number number_of_philosophers.
-Any other philosopher number N sits between philosopher number N - 1 and philosopher number N + 1.
-*/
-
-//circle *create_philosophers(int number_of_philosophers);
-
-/*
-Any state change of a philosopher must be formatted as follows:
-◦ timestamp_in_ms X has taken a fork
-◦ timestamp_in_ms X is eating
-◦ timestamp_in_ms X is sleeping
-◦ timestamp_in_ms X is thinking
-◦ timestamp_in_ms X died
-Replace timestamp_in_ms with the current timestamp in milliseconds
-and X with the philosopher number.
-
-• A displayed state message should not be mixed up with another message.
-
-• A message announcing a philosopher died should be displayed no more than 10 ms
-after the actual death of the philosopher.
-
-• Again, philosophers should avoid dying!
-*/
-
-void	print_philo_stats(int time, int index, char *stat)
-{
-	if(!strcmp(stat, "eating")
-	|| !strcmp(stat, "sleeping")
-	|| !strcmp(stat, "thinking"))
-		printf("%d %d is %s\n", time, index, stat);
-	else if (!strcmp(stat, "fork"))
-		printf("%d %d has taken a fork\n", time, index);
-	else
-		printf("%d %d died\n", time, index);
-}
-
-t_node *create_table_and_fill_with_n_philosophers(int number_of_philosophers)
-{
-	t_node *table;
-	int i;
-
-	i = 1;
-	table = insert_node(NULL, 1);
-	while(i < number_of_philosophers)
-		insert_node(table, i++ + 1);
-	return table;
-}
-
-void	free_table(t_node *table)
-{
-	while(!table->last)
-	{
-		table = table->next;
-		free(table->previous);
-	}
-	free(table);
-}
-
-void *nothing(void *vargp){
-	static int i = 0;
-	i++;
-	printf("[%d]\n", i);
-	return NULL;
-}
-
-void print_table(t_node *table)
-{
-	while(!table->last)
-	{
-		printf("{ philo %d }\n", table->index);
-		table = table->next;
-	}
-	printf("{ philo %d }\n", table->index);
-}
-
-void	free_args_and_table(t_node *table, t_data *args)
-{
-	free(args);
-	free_table(table);
-}
-
-void	create_threads_pair_and_odd(int is_odd, t_node *table)
-{
-	while(!table->last)
-	{
-		if((table->index % 2) == is_odd)
-		{
-			pthread_create(&table->thread_id, NULL, philosopher_lifecycle, NULL);
-			printf("%ld\n", table->thread_id);
-		}
-		table = table->next;
-	}
-	if((table->index % 2) == is_odd)
-	{
-		pthread_create(&table->thread_id, NULL, philosopher_lifecycle, NULL);
-		printf("%ld\n", table->thread_id);
-	}
-}
-
-void	init_mutex(t_node *table)
-{
-	while(!table->last)
-	{
-		pthread_mutex_init(&table->fork, NULL);
-		table = table->next;
-	}
-	pthread_mutex_init(&table->fork, NULL);
-}
-
-void	run_the_last_supper_simulation(t_node *table, t_data *args)
-{
-	t_data_and_node object;
-
-	object.table = table;
-	object.args = args;
-
-	print_table(table);
-	print_args(args);
-
-
-	init_mutex(table);
-	create_threads_pair_and_odd(1, table);
-	usleep(5);
-	create_threads_pair_and_odd(0, table);
-
-	exit(1);
-}
-
 int main(int argc, char *argv[])
 {
 	t_node *table;
 	t_data *args;
 
+	int	*is_running;
+	is_running = (int *)malloc(sizeof(int));
+	is_running[0] = 1;
 
+	args->is_running = is_running;
 	args = check_valid_arguments_and_struct(argc, argv);
-	table = create_table_and_fill_with_n_philosophers(args->number_of_philosophers);
+	table = create_table_and_fill_with_n_philosophers(args->number_of_philosophers, args);
 	run_the_last_supper_simulation(table, args);
 	free_args_and_table(table, args);
+	free(is_running);
 	return (0);
 }

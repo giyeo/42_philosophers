@@ -4,7 +4,7 @@ void	isnumber_handler(int argc, char *argv[])
 {
 	int		i;
 	int		j;
-	int		lenght;
+	int		length;
 	char	*string;
 
 	i = 0;
@@ -12,10 +12,10 @@ void	isnumber_handler(int argc, char *argv[])
 	{
 		j = 0;
 		string = argv[i++ + 1];
-		lenght = ft_strlen(string);
-		if (lenght == 0)
+		length = ft_strlen(string);
+		if (length == 0)
 			exit(1);
-		while (j < lenght)
+		while (j < length)
 		{
 			if (!ischardigit(string[j++]))
             {

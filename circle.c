@@ -1,6 +1,6 @@
 #include "philo.h"
 
-t_node	*create_circular(int index)
+t_node	*create_circular(int index, t_data *args)
 {
 	t_node *node;
 	node = (t_node *)malloc(sizeof(t_node) * 1);
@@ -9,15 +9,24 @@ t_node	*create_circular(int index)
 	node->last = 1;
 
 	node->index = index;
+	node->time_to_die = args->time_to_die;
+	node->time_to_eat = args->time_to_eat;
+	node->time_to_sleep = args->time_to_sleep;
+	node->number_of_times_each_philosopher_must_eat = args->number_of_times_each_philosopher_must_eat;
+	node->start_time = args->start_time;
+	node->last_eat_time = args->start_time;
+	node->is_running = args->is_running;
+	node->feed = 0;
+	node->number_of_philosophers = args->number_of_philosophers;
 	return node;
 }
 
-t_node	*insert_node(t_node *list, int index)
+t_node	*insert_node(t_node *list, int index, t_data *args)
 {
 	t_node *new;
 
 	if(list == NULL)
-		return create_circular(index);
+		return create_circular(index, args);
 	new = (t_node *)malloc(sizeof(t_node) * 1);
 
 	new->index = index;
@@ -29,6 +38,14 @@ t_node	*insert_node(t_node *list, int index)
 	new->previous = list;
 	list->next = new;
 	new->next->previous = new;
-
+	new->time_to_die = args->time_to_die;
+	new->time_to_eat = args->time_to_eat;
+	new->time_to_sleep = args->time_to_sleep;
+	new->number_of_times_each_philosopher_must_eat = args->number_of_times_each_philosopher_must_eat;
+	new->start_time = args->start_time;
+	new->last_eat_time = args->start_time;
+	new->is_running = args->is_running;
+	new->feed = 0;
+	new->number_of_philosophers = args->number_of_philosophers;
 	return NULL;
 }

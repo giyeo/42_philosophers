@@ -11,12 +11,13 @@ pthread_mutex_lock,
 pthread_mutex_unlock
 */
 
-int main(void)
-{
-    int i = 0;
-    while(i < 10)
-    {
-        printf("%d", 1++);
-        i++;
-    }
+
+
+int main() {
+	set_time_of_big_bang();
+	printf("%ld\n", time_of_big_bang(0,0));
+	printf("%ld\n", time_of_big_bang(0,0));
+	printf("%ld\n", time_of_big_bang(0,0));
+
+  return 0;
 }
