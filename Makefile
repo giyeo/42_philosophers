@@ -7,7 +7,7 @@ OBJS := $(SRC:.c=.o)
 
 FLAG := -fsanitize=address
 
-CFLAG := #-Wall -Wextra -Werror
+CFLAG := -Wall -Wextra -Werror
 
 all: $(NAME)
 

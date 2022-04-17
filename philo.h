@@ -6,7 +6,7 @@
 /*   By: rpaulino <rpaulino@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 18:19:10 by rpaulino          #+#    #+#             */
-/*   Updated: 2022/04/17 18:36:58 by rpaulino         ###   ########.fr       */
+/*   Updated: 2022/04/17 20:38:39 by rpaulino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct t_node
 	int				*is_running;
 	int				feed;
 	int				number_of_philosophers;
+	int				times_eaten;
 }					t_node;
 
 typedef struct s_data
@@ -70,6 +71,7 @@ t_node		*create_table_and_fill_with_n_philosophers(
 void		free_table(t_node *table);
 void		free_args_and_table(t_node *table, t_data *args);
 void		init_mutex(t_node *table);
+int			everyone_is_fed(int counter, t_node *table);
 
 // SIMULATION
 void		*philosopher_lifecycle(void *vargp);

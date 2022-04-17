@@ -6,7 +6,7 @@
 /*   By: rpaulino <rpaulino@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 18:15:11 by rpaulino          #+#    #+#             */
-/*   Updated: 2022/04/17 18:35:07 by rpaulino         ###   ########.fr       */
+/*   Updated: 2022/04/17 20:28:12 by rpaulino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	print(t_node *myself, char *text)
 {
 	if (!myself->is_running[0])
 		return (1);
-	printf("%ld %d %s\n", time_since_big_bang(myself->start_time),
+	printf("%6ld %d %s\n", time_since_big_bang(myself->start_time),
 		myself->index, text);
 	return (0);
 }

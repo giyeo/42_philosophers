@@ -55,3 +55,13 @@ void	init_mutex(t_node *table)
 	}
 	pthread_mutex_init(&table->fork, NULL);
 }
+
+int	everyone_is_fed(int counter, t_node *table)
+{
+	if (counter == table->number_of_philosophers)
+	{
+		table->is_running[0] = 0;
+		return (1);
+	}
+	return (0);
+}

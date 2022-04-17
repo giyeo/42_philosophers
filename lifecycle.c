@@ -6,18 +6,18 @@
 /*   By: rpaulino <rpaulino@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 18:31:38 by rpaulino          #+#    #+#             */
-/*   Updated: 2022/04/17 18:53:35 by rpaulino         ###   ########.fr       */
+/*   Updated: 2022/04/17 20:42:15 by rpaulino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	eat(int *times_eaten, t_node *myself, t_node *left_neighboor)
+void	eat(t_node *myself, t_node *left_neighboor)
 {
 	myself->last_eat_time = actual_time();
 	usleep(myself->time_to_eat * 1000);
-	(*times_eaten)++;
-	if (*times_eaten == myself->times_must_eat)
+	myself->times_eaten++;
+	if (myself->times_eaten == myself->times_must_eat)
 		myself->feed = 1;
 	pthread_mutex_unlock(&left_neighboor->fork);
 	pthread_mutex_unlock(&myself->fork);
@@ -26,10 +26,9 @@ void	eat(int *times_eaten, t_node *myself, t_node *left_neighboor)
 void	*philosopher_lifecycle(void *vargp)
 {
 	t_node	*myself;
-	int		times_eaten;
 
 	myself = (t_node *)vargp;
-	times_eaten = 0;
+	myself->times_eaten = 0;
 	while (1)
 	{
 		pthread_mutex_lock(&myself->fork);
@@ -43,13 +42,14 @@ void	*philosopher_lifecycle(void *vargp)
 			break ;
 		if (print(myself, "is eating"))
 			break ;
-		eat(&times_eaten, myself, myself->previous);
+		eat(myself, myself->previous);
 		if (print(myself, "is sleeping"))
 			break ;
 		usleep(myself->time_to_sleep * 1000);
 		if (print(myself, "is thinking"))
 			break ;
 	}
+	return (NULL);
 }
 
 void	create_threads_pair_and_odd(int is_odd, t_node *table)
@@ -77,21 +77,19 @@ void	*monitor(void *vargp)
 		if ((actual_time() - table->last_eat_time) > table->time_to_die * 1000)
 		{
 			table->is_running[0] = 0;
-			printf("%ld %d died\n",
+			printf("%6ld %d died\n",
 				((actual_time() - table->start_time) / 1000), table->index);
 			break ;
 		}
 		table = table->next;
 		if (table->feed)
 			counter++;
-		if (counter == table->number_of_philosophers)
-		{
-			table->is_running[0] = 0;
+		if (everyone_is_fed(counter, table))
 			break ;
-		}
 		if (table->last)
 			counter = 0;
 	}
+	return (NULL);
 }
 
 void	run_the_last_supper_simulation(t_node *table, t_data *args)
