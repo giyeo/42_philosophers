@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpaulino <rpaulino@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/17 18:22:05 by rpaulino          #+#    #+#             */
+/*   Updated: 2022/04/17 18:26:40 by rpaulino         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-t_data  *check_valid_arguments_and_struct(int argc, char *argv[])
+t_data	*check_valid_arguments_and_struct(int argc, char *argv[])
 {
-	t_data *args;
+	t_data	*args;
 
 	argc--;
 	correct_arguments(argc, argv);
@@ -12,22 +24,22 @@ t_data  *check_valid_arguments_and_struct(int argc, char *argv[])
 	args->time_to_eat = atoi(argv[3]);
 	args->time_to_sleep = atoi(argv[4]);
 	if (argc == 5)
-		args->number_of_times_each_philosopher_must_eat = atoi(argv[5]);
-	return args;
+		args->times_must_eat = atoi(argv[5]);
+	return (args);
 }
 
-int main(int argc, char *argv[])
+int	main(int argc, char *argv[])
 {
-	t_node *table;
-	t_data *args;
+	t_node	*table;
+	t_data	*args;
+	int		*is_running;
 
-	int	*is_running;
 	is_running = (int *)malloc(sizeof(int));
 	is_running[0] = 1;
-
 	args = check_valid_arguments_and_struct(argc, argv);
 	args->is_running = is_running;
-	table = create_table_and_fill_with_n_philosophers(args->number_of_philosophers, args);
+	table = create_table_and_fill_with_n_philosophers
+		(args->number_of_philosophers, args);
 	run_the_last_supper_simulation(table, args);
 	free_args_and_table(table, args);
 	free(is_running);

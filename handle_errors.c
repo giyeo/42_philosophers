@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_errors.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpaulino <rpaulino@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/17 18:27:59 by rpaulino          #+#    #+#             */
+/*   Updated: 2022/04/17 18:28:38 by rpaulino         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	isnumber_handler(int argc, char *argv[])
@@ -18,24 +30,24 @@ void	isnumber_handler(int argc, char *argv[])
 		while (j < length)
 		{
 			if (!ischardigit(string[j++]))
-            {
+			{
 				printf("%c\n", string[j]);
 				printf("only numbers! \n");
-                exit(1);
-            }
+				exit(1);
+			}
 		}
 	}
 }
 
-void    correct_arguments(int argc, char *argv[])
+void	correct_arguments(int argc, char *argv[])
 {
-    isnumber_handler(argc + 1, argv);
-    if(argc < 4 || argc > 5)
-    {
-        if(argc < 4)
-            printf("Not enough arguments! \n");
-        else
-            printf("So many arguments! \n");
-        exit(1);
-    }
+	isnumber_handler(argc + 1, argv);
+	if (argc < 4 || argc > 5)
+	{
+		if (argc < 4)
+			printf("Not enough arguments! \n");
+		else
+			printf("So many arguments! \n");
+		exit(1);
+	}
 }
