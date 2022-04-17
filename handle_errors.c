@@ -19,6 +19,7 @@ void	isnumber_handler(int argc, char *argv[])
 		{
 			if (!ischardigit(string[j++]))
             {
+				printf("%c\n", string[j]);
 				printf("only numbers! \n");
                 exit(1);
             }

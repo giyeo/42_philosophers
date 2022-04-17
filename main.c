@@ -25,8 +25,8 @@ int main(int argc, char *argv[])
 	is_running = (int *)malloc(sizeof(int));
 	is_running[0] = 1;
 
-	args->is_running = is_running;
 	args = check_valid_arguments_and_struct(argc, argv);
+	args->is_running = is_running;
 	table = create_table_and_fill_with_n_philosophers(args->number_of_philosophers, args);
 	run_the_last_supper_simulation(table, args);
 	free_args_and_table(table, args);
