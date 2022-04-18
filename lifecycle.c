@@ -6,7 +6,7 @@
 /*   By: rpaulino <rpaulino@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 18:31:38 by rpaulino          #+#    #+#             */
-/*   Updated: 2022/04/17 20:42:15 by rpaulino         ###   ########.fr       */
+/*   Updated: 2022/04/17 22:18:50 by rpaulino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,11 @@ void	eat(t_node *myself, t_node *left_neighboor)
 	myself->last_eat_time = actual_time();
 	usleep(myself->time_to_eat * 1000);
 	myself->times_eaten++;
-	if (myself->times_eaten == myself->times_must_eat)
-		myself->feed = 1;
+	if (myself->times_must_eat)
+	{
+		if (myself->times_eaten == myself->times_must_eat)
+			myself->feed = 1;
+	}
 	pthread_mutex_unlock(&left_neighboor->fork);
 	pthread_mutex_unlock(&myself->fork);
 }
@@ -88,6 +91,7 @@ void	*monitor(void *vargp)
 			break ;
 		if (table->last)
 			counter = 0;
+		usleep(1);
 	}
 	return (NULL);
 }

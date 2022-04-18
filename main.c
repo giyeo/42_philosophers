@@ -6,7 +6,7 @@
 /*   By: rpaulino <rpaulino@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 18:22:05 by rpaulino          #+#    #+#             */
-/*   Updated: 2022/04/17 18:26:40 by rpaulino         ###   ########.fr       */
+/*   Updated: 2022/04/17 22:23:10 by rpaulino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,14 @@ t_data	*check_valid_arguments_and_struct(int argc, char *argv[])
 
 	argc--;
 	correct_arguments(argc, argv);
-	args = (t_data *)malloc(1);
+	args = (t_data *)malloc(sizeof(t_data) * 1);
 	args->number_of_philosophers = atoi(argv[1]);
+	if (args->number_of_philosophers <= 0)
+	{
+		free(args);
+		printf("must have at least 1 philosopher\n");
+		exit(1);
+	}
 	args->time_to_die = atoi(argv[2]);
 	args->time_to_eat = atoi(argv[3]);
 	args->time_to_sleep = atoi(argv[4]);
